@@ -17,5 +17,22 @@ function wordCounter(text) {
   return wordCount;
 }
 
+// Function that counts how many times a word appears in a given text.
+function numberOfOccurrencesInText(word, text) {
+  if (text.trim().length === 0) {
+    return 0;
+  }
+
+  const wordArray = text.split(" ");
+  let wordCount = 0;
+
+  wordArray.forEach(function (element) {
+    if (word.toLowerCase() === element.toLowerCase()) {
+      wordCount++;
+    }
+  });
+  return wordCount;
+}
+
 // User Interface Logic
 $(document).ready(function () {});
