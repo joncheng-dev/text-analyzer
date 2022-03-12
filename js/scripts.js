@@ -22,12 +22,10 @@ function numberOfOccurrencesInText(word, text) {
   if (text.trim().length === 0) {
     return 0;
   }
-
   const wordArray = text.split(" ");
   let wordCount = 0;
-
   wordArray.forEach(function (element) {
-    if (word.toLowerCase() === element.toLowerCase()) {
+    if (element.toLowerCase().includes(word.toLowerCase())) {
       wordCount++;
     }
   });
@@ -35,4 +33,22 @@ function numberOfOccurrencesInText(word, text) {
 }
 
 // User Interface Logic
-$(document).ready(function () {});
+$(document).ready(function () {
+  $("form#word-counter").submit(function (event) {
+    event.preventDefault();
+    // Grab information user entered.
+    // First, the block of text: #text-passage. Put this aside in a variable.
+    const textEntered = $("#text-passage").val();
+    // Next, the word for word counting: #word.
+    const wordOfFocus = $("#word").val();
+
+    // Put into existing functions. Store what they return into variables.
+    const wordCountPassage = parseInt(wordCounter(textEntered));
+    const wordToFind = parseInt(
+      numberOfOccurrencesInText(wordOfFocus, textEntered)
+    );
+    // Display to html page.
+    $("#total-count").html(wordCountPassage);
+    $("#selected-count").html(wordToFind);
+  });
+});
