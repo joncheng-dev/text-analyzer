@@ -1,12 +1,15 @@
 // Business Logic
 
+// Utility Logic
+function noInputtedWord(word, text) {
+  return text.trim().length === 0 || word.trim().length === 0;
+}
+
 // Function that counts number of words in a given text.
 function wordCounter(text) {
-  // If text length is zero, then return 0.
   if (text.trim().length === 0) {
     return 0;
   }
-  // If text length is not zero, then count how many words there are.
   let wordCount = 0;
   const wordArray = text.split(" ");
   wordArray.forEach(function (element) {
@@ -19,9 +22,10 @@ function wordCounter(text) {
 
 // Function that counts how many times a word appears in a given text.
 function numberOfOccurrencesInText(word, text) {
-  if (text.trim().length === 0) {
+  if (noInputtedWord(word, text)) {
     return 0;
   }
+
   const wordArray = text.split(" ");
   let wordCount = 0;
   wordArray.forEach(function (element) {
@@ -32,23 +36,41 @@ function numberOfOccurrencesInText(word, text) {
   return wordCount;
 }
 
+// Function that bolds text the user is searching for.
+function boldPassage(word, text) {
+  if (noInputtedWord(word, text)) {
+    return "";
+  }
+  let htmlString = "<p>";
+  let textArray = text.split(" ");
+  console.log("Words in text split into array: " + textArray);
+  textArray.forEach(function (element, index) {
+    if (element.toLowerCase().includes(word.toLowerCase())) {
+      htmlString = htmlString.concat("<b>" + element + "</b>");
+    } else {
+      htmlString = htmlString.concat(element);
+    }
+    if (index !== textArray.length - 1) {
+      htmlString = htmlString.concat(" ");
+    }
+  });
+  console.log(htmlString + "</p>");
+  return htmlString + "</p>";
+}
+
 // User Interface Logic
 $(document).ready(function () {
   $("form#word-counter").submit(function (event) {
     event.preventDefault();
-    // Grab information user entered.
-    // First, the block of text: #text-passage. Put this aside in a variable.
-    const textEntered = $("#text-passage").val();
-    // Next, the word for word counting: #word.
-    const wordOfFocus = $("#word").val();
+    const passage = $("#text-passage").val();
+    const word = $("#word").val();
 
-    // Put into existing functions. Store what they return into variables.
-    const wordCountPassage = parseInt(wordCounter(textEntered));
-    const wordToFind = parseInt(
-      numberOfOccurrencesInText(wordOfFocus, textEntered)
-    );
-    // Display to html page.
-    $("#total-count").html(wordCountPassage);
-    $("#selected-count").html(wordToFind);
+    const wordCount = wordCounter(passage);
+    const occurrencesOfWord = numberOfOccurrencesInText(word, passage);
+
+    $("#total-count").html(wordCount);
+    $("#selected-count").html(occurrencesOfWord);
+
+    $("#bolded-passage").html(boldPassage(word, passage));
   });
 });
