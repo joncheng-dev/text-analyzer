@@ -5,6 +5,22 @@ function noInputtedWord(word, text) {
   return text.trim().length === 0 || word.trim().length === 0;
 }
 
+// Function that takes a string and returns only alpha characters.
+function lowerAlphaCharOnly(string) {
+  const lowerCase = string.toLowerCase();
+  console.log("String is now lowercased: " + lowerCase);
+
+  const lowerAlphaCharWord = [];
+  for (i = 0; i < lowerCase.length; i++) {
+    if (lowerCase.charCodeAt(i) > 96 && lowerCase.charCodeAt(i) < 123) {
+      lowerAlphaCharWord.push(lowerCase.charAt(i));
+    }
+  }
+  const modifiedWord = lowerAlphaCharWord.join("");
+  console.log("Word with only characters: " + modifiedWord);
+  return modifiedWord;
+}
+
 // Function that counts number of words in a given text.
 function wordCounter(text) {
   if (text.trim().length === 0) {
@@ -45,11 +61,24 @@ function numberOfOccurrencesInText(word, text) {
   if (noInputtedWord(word, text)) {
     return 0;
   }
-
   const wordArray = text.split(" ");
   let wordCount = 0;
   wordArray.forEach(function (element) {
-    if (element.toLowerCase().includes(word.toLowerCase())) {
+    // Strings with non alphabet characters removed.
+    const stringFromArray = lowerAlphaCharOnly(element);
+    const wordOfInterest = lowerAlphaCharOnly(word);
+    // Checks if the whole word matches.
+    let charMatchCount = 0;
+    for (i = 0; i < stringFromArray.length; i++) {
+      if (stringFromArray.charAt(i) === wordOfInterest.charAt(i)) {
+        console.log("Char at " + i + " location matches.");
+        charMatchCount++;
+      } else {
+        console.log("Char at " + i + " does not match.");
+        break;
+      }
+    }
+    if (charMatchCount === wordOfInterest.length) {
       wordCount++;
     }
   });
@@ -66,20 +95,18 @@ function mostCommon(text) {
   });
   console.log("Text in ea. position: " + textArray);
   console.log("# of each element: " + elementCount);
-  // Loop through the text array positions, and then zero the elementCount array at the position.
   // Hi there hey yo hi hi yay yo whoa there whoa... yay!
   const uniqueWords = [];
   textArray.forEach(function (element) {
     // Hi,there,hey,yo,hi,hi,yay,yo,whoa,there,whoa...,yay!
     // 3,     2,  1, 2, 3, 3,  2, 2,   2,    2,   1,     1
-
     if (!uniqueWords.includes(element.toLowerCase())) {
       uniqueWords.push(element.toLowerCase());
     }
-    // First, it goes to "Hi". This word has not been logged yet. Great.
-    // Then it checks "there". This word has not been logged yet. Great.
-    // ..
-    // Then it sees "hi". This word has already been logged. Therefore zero the other array at this position --- elementCount[index] = 0;
+
+    for (i = 0; i <= element.length; i++) {}
+    // Make an if statement.. that checks to see if the strings match.
+    // If there's punctuation, ignore the punctuation.
   });
   console.log("Array of unique words: " + uniqueWords);
 }
