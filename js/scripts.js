@@ -8,7 +8,6 @@ function noInputtedWord(word, text) {
 // Function that takes a string and returns only alpha characters.
 function lowerAlphaCharOnly(string) {
   const lowerCase = string.toLowerCase();
-  console.log("String is now lowercased: " + lowerCase);
 
   const lowerAlphaCharWord = [];
   for (i = 0; i < lowerCase.length; i++) {
@@ -17,8 +16,24 @@ function lowerAlphaCharOnly(string) {
     }
   }
   const modifiedWord = lowerAlphaCharWord.join("");
-  console.log("Word with only characters: " + modifiedWord);
   return modifiedWord;
+}
+
+// Function that takes an array, and returns its largest number and index.
+function largestNumber(numbersList) {
+  let largest = numbersList[0];
+  let largestIndex = 0;
+  console.log("The largest number is " + largest);
+  console.log("The largest number's index is: " + largestIndex);
+  numbersList.forEach(function (value, index) {
+    if (largest < value) {
+      largest = value;
+      largestIndex = index;
+    }
+  });
+  console.log("The largest number is " + largest);
+  console.log("The largest number's index is: " + largestIndex);
+  return largest, largestIndex;
 }
 
 // Function that counts number of words in a given text.
@@ -30,6 +45,33 @@ function wordCounter(text) {
   const wordArray = text.split(" ");
   wordArray.forEach(function (element) {
     if (!Number(element)) {
+      wordCount++;
+    }
+  });
+  return wordCount;
+}
+
+// Function that counts how many times a word appears in a given text.
+function numberOfOccurrencesInText(word, text) {
+  if (noInputtedWord(word, text)) {
+    return 0;
+  }
+  const wordArray = text.split(" ");
+  let wordCount = 0;
+  wordArray.forEach(function (element) {
+    // Strings with non alphabet characters removed.
+    const stringFromArray = lowerAlphaCharOnly(element);
+    const wordOfInterest = lowerAlphaCharOnly(word);
+    // Checks if the whole word matches.
+    let charMatchCount = 0;
+    for (i = 0; i < stringFromArray.length; i++) {
+      if (stringFromArray.charAt(i) === wordOfInterest.charAt(i)) {
+        charMatchCount++;
+      } else {
+        break;
+      }
+    }
+    if (charMatchCount === wordOfInterest.length) {
       wordCount++;
     }
   });
@@ -56,59 +98,35 @@ function boldPassage(word, text) {
   return htmlString + "</p>";
 }
 
-// Function that counts how many times a word appears in a given text.
-function numberOfOccurrencesInText(word, text) {
-  if (noInputtedWord(word, text)) {
-    return 0;
-  }
-  const wordArray = text.split(" ");
-  let wordCount = 0;
-  wordArray.forEach(function (element) {
-    // Strings with non alphabet characters removed.
-    const stringFromArray = lowerAlphaCharOnly(element);
-    const wordOfInterest = lowerAlphaCharOnly(word);
-    // Checks if the whole word matches.
-    let charMatchCount = 0;
-    for (i = 0; i < stringFromArray.length; i++) {
-      if (stringFromArray.charAt(i) === wordOfInterest.charAt(i)) {
-        console.log("Char at " + i + " location matches.");
-        charMatchCount++;
-      } else {
-        console.log("Char at " + i + " does not match.");
-        break;
-      }
-    }
-    if (charMatchCount === wordOfInterest.length) {
-      wordCount++;
-    }
-  });
-  return wordCount;
-}
-
 // Function that returns the most common words in a passage.
 function mostCommon(text) {
-  const textArray = text.split(" ");
+  const wordArray = text.split(" ");
   const elementCount = [];
 
-  textArray.forEach(function (element) {
+  const charsOnlyArray = [];
+  wordArray.forEach(function (element) {
+    charsOnlyArray.push(lowerAlphaCharOnly(element));
+  });
+  charsOnlyArray.forEach(function (element) {
+    // Keeps count of how many each word shows.
     elementCount.push(numberOfOccurrencesInText(element, text));
   });
-  console.log("Text in ea. position: " + textArray);
-  console.log("# of each element: " + elementCount);
-  // Hi there hey yo hi hi yay yo whoa there whoa... yay!
+  console.log("Array with Chars only: " + charsOnlyArray);
+  console.log("Count how many of each: " + elementCount);
   const uniqueWords = [];
-  textArray.forEach(function (element) {
-    // Hi,there,hey,yo,hi,hi,yay,yo,whoa,there,whoa...,yay!
-    // 3,     2,  1, 2, 3, 3,  2, 2,   2,    2,   1,     1
-    if (!uniqueWords.includes(element.toLowerCase())) {
+  const uniqueWordsCount = [];
+  charsOnlyArray.forEach(function (element, index) {
+    if (!uniqueWords.includes(element)) {
       uniqueWords.push(element.toLowerCase());
+      uniqueWordsCount.push(elementCount[index]);
     }
-
-    for (i = 0; i <= element.length; i++) {}
-    // Make an if statement.. that checks to see if the strings match.
-    // If there's punctuation, ignore the punctuation.
   });
   console.log("Array of unique words: " + uniqueWords);
+  console.log("Number of times show up: " + uniqueWordsCount);
+  // Go through the uniqueWordsCount array, and check for biggest counts.
+  // Need position of biggest numbers.
+  largestNumber(uniqueWordsCount);
+  console.log();
 }
 
 // User Interface Logic
