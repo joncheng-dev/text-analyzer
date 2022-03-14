@@ -20,20 +20,20 @@ function lowerAlphaCharOnly(string) {
 }
 
 // Function that takes an array, and returns its largest number and index.
-function largestNumber(numbersList) {
-  let largest = numbersList[0];
+function largestNumber(nestedArray) {
+  let largestNumber = nestedArray[0][0];
   let largestIndex = 0;
-  console.log("The largest number is " + largest);
+  console.log("The largest number is " + largestNumber);
   console.log("The largest number's index is: " + largestIndex);
-  numbersList.forEach(function (value, index) {
-    if (largest < value) {
-      largest = value;
+  nestedArray.forEach(function (value, index) {
+    if (largestNumber < value) {
+      largestNumber = value;
       largestIndex = index;
     }
   });
-  console.log("The largest number is " + largest);
+  console.log("The largest number is " + largestNumber);
   console.log("The largest number's index is: " + largestIndex);
-  return largest, largestIndex;
+  return largestNumber, largestIndex;
 }
 
 // Function that counts number of words in a given text.
@@ -113,20 +113,16 @@ function mostCommon(text) {
   });
   console.log("Array with Chars only: " + charsOnlyArray);
   console.log("Count how many of each: " + elementCount);
-  const uniqueWords = [];
-  const uniqueWordsCount = [];
+
+  // Nested array keeps track of element and times it shows.
+  const uniqueWordsAndCount = [];
   charsOnlyArray.forEach(function (element, index) {
-    if (!uniqueWords.includes(element)) {
-      uniqueWords.push(element.toLowerCase());
-      uniqueWordsCount.push(elementCount[index]);
+    if (!uniqueWordsAndCount.includes(element)) {
+      uniqueWordsAndCount.push([element, elementCount[index]]);
     }
   });
-  console.log("Array of unique words: " + uniqueWords);
-  console.log("Number of times show up: " + uniqueWordsCount);
   // Go through the uniqueWordsCount array, and check for biggest counts.
-  // Need position of biggest numbers.
-  largestNumber(uniqueWordsCount);
-  console.log();
+  largestNumber(uniqueWordsAndCount);
 }
 
 // User Interface Logic
