@@ -116,13 +116,41 @@ function mostCommon(text) {
 
   // Nested array keeps track of element and times it shows.
   const uniqueWordsAndCount = [];
-  charsOnlyArray.forEach(function (element, index) {
-    if (!uniqueWordsAndCount.includes(element)) {
-      uniqueWordsAndCount.push([element, elementCount[index]]);
+  console.log("All unique words & count: " + uniqueWordsAndCount);
+
+  for (i = 0; i < charsOnlyArray.length; i++) {
+    if (!uniqueWordsAndCount.includes(charsOnlyArray[i])) {
+      uniqueWordsAndCount.push([charsOnlyArray[i], elementCount[i]]);
     }
-  });
+  }
+
+  // charsOnlyArray.forEach(function (element, index) {
+  //   if (!uniqueWordsAndCount.includes(element)) {
+  //     uniqueWordsAndCount.push([element, elementCount[index]]);
+  //   }
+  // });
+
+  console.log("All unique words & count: " + uniqueWordsAndCount);
+  console.log("Array[0]: " + uniqueWordsAndCount[0]);
+  console.log("Array[1]: " + uniqueWordsAndCount[1]);
+  console.log("Array[2]: " + uniqueWordsAndCount[2]);
+  console.log("Array[3]: " + uniqueWordsAndCount[3]);
+  console.log("Array[4]: " + uniqueWordsAndCount[4]);
+  console.log("Array[0][0]: " + uniqueWordsAndCount[0][0]);
+  console.log("Array[0][1]: " + uniqueWordsAndCount[0][1]);
+  console.log("Array[1][0]: " + uniqueWordsAndCount[1][0]);
+  console.log("Array[1][1]: " + uniqueWordsAndCount[1][1]);
   // Go through the uniqueWordsCount array, and check for biggest counts.
-  largestNumber(uniqueWordsAndCount);
+  // largestNumber(uniqueWordsAndCount);
+
+  // How to proceed with find most common function:
+  // Get rid of the nested array.. back to 2 separate arrays, one with string, one with count. .
+  // Use largest value function.. to find the largest number in the count array.. and return that index position.
+  // Use the index position to print to the html the string and the count found in the text. ("hi", 3)..
+  // Set this index position's count value to zero..
+  // Use largest value function again.
+  // And then again.
+  // Run it 3 times, and this gives me the top 3 most common words, with number of occurrences.
 }
 
 // User Interface Logic
