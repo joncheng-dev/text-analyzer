@@ -19,13 +19,6 @@ function lowerAlphaCharOnly(string) {
   return modifiedWord;
 }
 
-// Utility function: Takes an array of words, and an array of occurrences.
-// Removes any duplicate entries in the array of words.
-
-// function removeDuplicateWords(wordList, wordCount) {
-//   return;
-// }
-
 // Function that takes an array, and returns the largest number & index.
 function largestNumber(numbersList) {
   let largest = numbersList[0];
@@ -36,8 +29,6 @@ function largestNumber(numbersList) {
       largestIndex = index;
     }
   });
-  console.log("Largest number: " + largest);
-  console.log("Number's index: " + largestIndex);
   return largestIndex;
 }
 
@@ -103,6 +94,19 @@ function boldPassage(word, text) {
   return htmlString + "</p>";
 }
 
+// Function that appends html page Most common words
+function appendMostCommon(nestedArray) {
+  let list = "<ul>";
+  for (i = 0; i < 3; i++) {
+    for (j = 0; j < 1; j++) {
+      list = list.concat(
+        "<li>" + nestedArray[i][j] + ": " + nestedArray[i][j + 1] + "</li>"
+      );
+    }
+  }
+  return list + "</u>";
+}
+
 // Function that returns the most common words in a passage.
 function mostCommon(text) {
   const wordArray = text.split(" ");
@@ -116,8 +120,6 @@ function mostCommon(text) {
     // Keeps count of how many each word shows.
     elementCount.push(numberOfOccurrencesInText(element, text));
   });
-  console.log("Chars only: " + charsOnlyArray);
-  console.log("Char count: " + elementCount);
   // New array holds all unique words from array.
   const uniqueWords = [];
   const uniqueCount = [];
@@ -127,26 +129,21 @@ function mostCommon(text) {
       uniqueCount.push(elementCount[index]);
     }
   });
-  console.log("Unique words: " + uniqueWords);
-  console.log("Unique count: " + uniqueCount);
+  // Make a nested array to return:
+  const commonWordsAndCount = [];
   // Go through the uniqueWordsCount array, and check for biggest counts.
   // Return that index position.
-  let arrayIndex = largestNumber(uniqueCount);
+  let arrayIndex = [];
   // Use the index position to print to the html the string and the count found in the text. ("hi", 3)..
-  console.log("Most common word: " + uniqueWords[arrayIndex]);
-  console.log("Times seen: " + uniqueCount[arrayIndex]);
-  // Set this index position's count value to zero..
-  uniqueCount[arrayIndex] = 0;
-  // Use largest value function again.
-  arrayIndex = largestNumber(uniqueCount);
-  console.log("Most common word: " + uniqueWords[arrayIndex]);
-  console.log("Times seen: " + uniqueCount[arrayIndex]);
-  // And then again.
-  uniqueCount[arrayIndex] = 0;
-  arrayIndex = largestNumber(uniqueCount);
-  console.log("Most common word: " + uniqueWords[arrayIndex]);
-  console.log("Times seen: " + uniqueCount[arrayIndex]);
-  // Run it 3 times, and this gives me the top 3 most common words, with number of occurrences.
+  for (i = 0; i < 3; i++) {
+    arrayIndex = largestNumber(uniqueCount);
+    commonWordsAndCount.push([
+      uniqueWords[arrayIndex],
+      uniqueCount[arrayIndex],
+    ]);
+    uniqueCount[arrayIndex] = 0;
+  }
+  return commonWordsAndCount;
 }
 
 // User Interface Logic
@@ -159,13 +156,11 @@ $(document).ready(function () {
     const wordCount = wordCounter(passage);
     const occurrencesOfWord = numberOfOccurrencesInText(word, passage);
 
-    // Find most common word
-    // Display most common word
-    // Delete entry in the array -- both string & count
-    // x3
+    const print = appendMostCommon(mostCommon(passage));
+
     $("#total-count").html(wordCount);
     $("#selected-count").html(occurrencesOfWord);
     $("#bolded-passage").html(boldPassage(word, passage));
-    $("#most-common").html(mostCommon(passage));
+    $("#most-common").html(print);
   });
 });
