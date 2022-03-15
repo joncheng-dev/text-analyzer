@@ -5,7 +5,7 @@ function noInputtedWord(word, text) {
   return text.trim().length === 0 || word.trim().length === 0;
 }
 
-// Function that takes a string and returns only alpha characters.
+// Utility function that takes a string and returns only alpha characters.
 function lowerAlphaCharOnly(string) {
   const lowerCase = string.toLowerCase();
 
@@ -19,21 +19,26 @@ function lowerAlphaCharOnly(string) {
   return modifiedWord;
 }
 
-// Function that takes an array, and returns its largest number and index.
-function largestNumber(nestedArray) {
-  let largestNumber = nestedArray[0][0];
+// Utility function: Takes an array of words, and an array of occurrences.
+// Removes any duplicate entries in the array of words.
+
+// function removeDuplicateWords(wordList, wordCount) {
+//   return;
+// }
+
+// Function that takes an array, and returns the largest number & index.
+function largestNumber(numbersList) {
+  let largest = numbersList[0];
   let largestIndex = 0;
-  console.log("The largest number is " + largestNumber);
-  console.log("The largest number's index is: " + largestIndex);
-  nestedArray.forEach(function (value, index) {
-    if (largestNumber < value) {
-      largestNumber = value;
+  numbersList.forEach(function (value, index) {
+    if (largest < value) {
+      largest = value;
       largestIndex = index;
     }
   });
-  console.log("The largest number is " + largestNumber);
-  console.log("The largest number's index is: " + largestIndex);
-  return largestNumber, largestIndex;
+  console.log("Largest number: " + largest);
+  console.log("Number's index: " + largestIndex);
+  return largestIndex;
 }
 
 // Function that counts number of words in a given text.
@@ -111,45 +116,36 @@ function mostCommon(text) {
     // Keeps count of how many each word shows.
     elementCount.push(numberOfOccurrencesInText(element, text));
   });
-  console.log("Array with Chars only: " + charsOnlyArray);
-  console.log("Count how many of each: " + elementCount);
-
-  // Nested array keeps track of element and times it shows.
-  const uniqueWordsAndCount = [];
-  console.log("All unique words & count: " + uniqueWordsAndCount);
-
-  for (i = 0; i < charsOnlyArray.length; i++) {
-    if (!uniqueWordsAndCount.includes(charsOnlyArray[i])) {
-      uniqueWordsAndCount.push([charsOnlyArray[i], elementCount[i]]);
+  console.log("Chars only: " + charsOnlyArray);
+  console.log("Char count: " + elementCount);
+  // New array holds all unique words from array.
+  const uniqueWords = [];
+  const uniqueCount = [];
+  charsOnlyArray.forEach(function (word, index) {
+    if (!uniqueWords.includes(word)) {
+      uniqueWords.push(word.toLowerCase());
+      uniqueCount.push(elementCount[index]);
     }
-  }
-
-  // charsOnlyArray.forEach(function (element, index) {
-  //   if (!uniqueWordsAndCount.includes(element)) {
-  //     uniqueWordsAndCount.push([element, elementCount[index]]);
-  //   }
-  // });
-
-  console.log("All unique words & count: " + uniqueWordsAndCount);
-  console.log("Array[0]: " + uniqueWordsAndCount[0]);
-  console.log("Array[1]: " + uniqueWordsAndCount[1]);
-  console.log("Array[2]: " + uniqueWordsAndCount[2]);
-  console.log("Array[3]: " + uniqueWordsAndCount[3]);
-  console.log("Array[4]: " + uniqueWordsAndCount[4]);
-  console.log("Array[0][0]: " + uniqueWordsAndCount[0][0]);
-  console.log("Array[0][1]: " + uniqueWordsAndCount[0][1]);
-  console.log("Array[1][0]: " + uniqueWordsAndCount[1][0]);
-  console.log("Array[1][1]: " + uniqueWordsAndCount[1][1]);
+  });
+  console.log("Unique words: " + uniqueWords);
+  console.log("Unique count: " + uniqueCount);
   // Go through the uniqueWordsCount array, and check for biggest counts.
-  // largestNumber(uniqueWordsAndCount);
-
-  // How to proceed with find most common function:
-  // Get rid of the nested array.. back to 2 separate arrays, one with string, one with count. .
-  // Use largest value function.. to find the largest number in the count array.. and return that index position.
+  // Return that index position.
+  let arrayIndex = largestNumber(uniqueCount);
   // Use the index position to print to the html the string and the count found in the text. ("hi", 3)..
+  console.log("Most common word: " + uniqueWords[arrayIndex]);
+  console.log("Times seen: " + uniqueCount[arrayIndex]);
   // Set this index position's count value to zero..
+  uniqueCount[arrayIndex] = 0;
   // Use largest value function again.
+  arrayIndex = largestNumber(uniqueCount);
+  console.log("Most common word: " + uniqueWords[arrayIndex]);
+  console.log("Times seen: " + uniqueCount[arrayIndex]);
   // And then again.
+  uniqueCount[arrayIndex] = 0;
+  arrayIndex = largestNumber(uniqueCount);
+  console.log("Most common word: " + uniqueWords[arrayIndex]);
+  console.log("Times seen: " + uniqueCount[arrayIndex]);
   // Run it 3 times, and this gives me the top 3 most common words, with number of occurrences.
 }
 
@@ -163,6 +159,10 @@ $(document).ready(function () {
     const wordCount = wordCounter(passage);
     const occurrencesOfWord = numberOfOccurrencesInText(word, passage);
 
+    // Find most common word
+    // Display most common word
+    // Delete entry in the array -- both string & count
+    // x3
     $("#total-count").html(wordCount);
     $("#selected-count").html(occurrencesOfWord);
     $("#bolded-passage").html(boldPassage(word, passage));
