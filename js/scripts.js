@@ -19,6 +19,35 @@ function lowerAlphaCharOnly(string) {
   return modifiedWord;
 }
 
+// Function that filters specified words.
+function wordFilter(text) {
+  const wordArray = text.split(" ");
+  const wordsToFilter = ["zoinks", "muppeteer", "biffaroni", "loopdaloop"];
+  const noPunctuationArray = [];
+  // Whole array has punctuation removed. Words only now.
+  wordArray.forEach(function (element) {
+    noPunctuationArray.push(lowerAlphaCharOnly(element));
+  });
+  // Go through each element in array, check to see if matches wordsToFilter.
+  noPunctuationArray.forEach(function (element, index) {
+    // Checks if the whole word matches.
+    for (i = 0; i < wordsToFilter.length; i++) {
+      let charMatchCount = 0;
+      for (j = 0; j < element.length; j++) {
+        if (element.charAt(j) === wordsToFilter[i].charAt(j)) {
+          charMatchCount++;
+        } else {
+          break;
+        }
+        if (charMatchCount === wordsToFilter[i].length) {
+          noPunctuationArray.splice(index, 1);
+        }
+      }
+    }
+  });
+  return noPunctuationArray.join(" ");
+}
+
 // Function that takes an array, and returns the largest number & index.
 function largestNumber(numbersList) {
   let largest = numbersList[0];
@@ -153,14 +182,18 @@ $(document).ready(function () {
     const passage = $("#text-passage").val();
     const word = $("#word").val();
 
-    const wordCount = wordCounter(passage);
-    const occurrencesOfWord = numberOfOccurrencesInText(word, passage);
+    // Text after filtering words.
+    const afterFiltering = wordFilter(passage);
 
-    const print = appendMostCommon(mostCommon(passage));
+    const wordCount = wordCounter(afterFiltering);
+    const occurrencesOfWord = numberOfOccurrencesInText(word, afterFiltering);
 
+    const print = appendMostCommon(mostCommon(afterFiltering));
+
+    $("#filtered-text").html(afterFiltering);
     $("#total-count").html(wordCount);
     $("#selected-count").html(occurrencesOfWord);
-    $("#bolded-passage").html(boldPassage(word, passage));
+    $("#bolded-passage").html(boldPassage(word, afterFiltering));
     $("#most-common").html(print);
   });
 });
