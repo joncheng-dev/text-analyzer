@@ -111,7 +111,15 @@ function boldPassage(word, text) {
   let htmlString = "<p>";
   let textArray = text.split(" ");
   textArray.forEach(function (element, index) {
-    if (element.toLowerCase().includes(word.toLowerCase())) {
+    let charMatchCount = 0;
+    for (i = 0; i < element.length; i++) {
+      if (element.charAt(i) === word.charAt(i)) {
+        charMatchCount++;
+      } else {
+        break;
+      }
+    }
+    if (charMatchCount === element.length && charMatchCount === word.length) {
       htmlString = htmlString.concat("<b>" + element + "</b>");
     } else {
       htmlString = htmlString.concat(element);
