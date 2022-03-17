@@ -1,8 +1,13 @@
 // Business Logic
 
 // Utility Logic
-function noInputtedWord(word, text) {
-  return text.trim().length === 0 || word.trim().length === 0;
+function noInputtedWord() {
+  for (let i = 0; i < arguments.length; i++) {
+    if (arguments[i].trim().length === 0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 // Utility function that takes a string and returns only alpha characters.
@@ -48,6 +53,16 @@ function wordFilter(text) {
   return noPunctuationArray.join(" ");
 }
 
+function firstInstanceOfWord(word, text) {
+  const textArray = text.split(" ");
+  for (let i = 0; i < textArray.length; i++) {
+    console.log(i);
+    if (word === textArray[i]) {
+      return i;
+    }
+  }
+}
+
 // Function that takes an array, and returns the largest number & index.
 function largestNumber(numbersList) {
   let largest = numbersList[0];
@@ -63,7 +78,7 @@ function largestNumber(numbersList) {
 
 // Function that counts number of words in a given text.
 function wordCounter(text) {
-  if (text.trim().length === 0) {
+  if (noInputtedWord(text)) {
     return 0;
   }
   let wordCount = 0;
